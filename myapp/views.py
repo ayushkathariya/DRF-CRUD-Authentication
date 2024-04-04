@@ -5,6 +5,7 @@ from rest_framework.generics import (
     CreateAPIView,
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
+    ListAPIView,
 )
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -18,6 +19,8 @@ class TodoAPIView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        data = Todo.objects.filter(user=self.request.user)
+        print(data)
         return Todo.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
@@ -32,6 +35,13 @@ class SingleTodoAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class RegisterUserAPIView(CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [AllowAny]
+
+
+class UserAPIView(ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     authentication_classes = [JWTAuthentication]

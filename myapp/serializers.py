@@ -11,6 +11,12 @@ class CustomUserSerializer(ModelSerializer):
         model = CustomUser
         fields = ["id", "email", "password", "date_joined"]
 
+    def create(self, validated_data):
+        user = CustomUser.objects.create_user(
+            email=validated_data["email"], password=validated_data["password"]
+        )
+        return user
+
 
 class TodoSerializer(ModelSerializer):
     class Meta:
