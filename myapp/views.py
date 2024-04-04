@@ -9,6 +9,7 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .paginations import TodoPageNumberPagination
 
 
 # Create your views here.
@@ -17,10 +18,10 @@ class TodoAPIView(ListCreateAPIView):
     serializer_class = TodoSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    pagination_class = TodoPageNumberPagination
 
     def get_queryset(self):
         data = Todo.objects.filter(user=self.request.user)
-        print(data)
         return Todo.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
