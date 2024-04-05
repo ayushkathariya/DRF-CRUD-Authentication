@@ -10,6 +10,7 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .paginations import TodoPageNumberPagination
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 
 
 # Create your views here.
@@ -47,6 +48,7 @@ class UserAPIView(ListAPIView):
     serializer_class = CustomUserSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [AllowAny]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     filterset_fields = ("email", "id")
     ordering_fields = (
         "email",

@@ -138,6 +138,16 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.OrderingFilter",
     ),
+    "DEFAULT_THROTTLE_CLASSES": (
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+        # Add more throttling classes if needed
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "10/minute",  # Allow 100 requests per day for anonymous users
+        "user": "1000/day",  # Allow 1000 requests per day for authenticated users
+        # Example 100/day or 10/hour or 1/minute
+    },
 }
 
 SIMPLE_JWT = {
