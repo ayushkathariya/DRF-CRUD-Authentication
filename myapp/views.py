@@ -47,8 +47,11 @@ class UserAPIView(ListAPIView):
     serializer_class = CustomUserSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [AllowAny]
-    # filter_backends = [DjangoFilterBackend]    # Can use it Locally but applied globally in settings inside Rest_Framework
     filterset_fields = ("email", "id")
+    ordering_fields = (
+        "email",
+        "id",
+    )
 
 
 class SingleCustomUserAPIView(RetrieveUpdateDestroyAPIView):
