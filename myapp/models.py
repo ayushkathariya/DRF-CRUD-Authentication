@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from .managers import CustomUserManager
+from autoslug import AutoSlugField
 
 
 class CustomUser(AbstractUser):
@@ -17,6 +18,7 @@ class CustomUser(AbstractUser):
 
 class Todo(models.Model):
     task = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from="task", unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

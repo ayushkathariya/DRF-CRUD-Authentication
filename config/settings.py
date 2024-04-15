@@ -185,7 +185,7 @@ DJOSER = {
     "SEND_ACTIVATION_EMAIL": True,
     "SEND_CONFIRMATION_EMAIL": True,
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
-    "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",  # Set the frontend url. Example: http:localhost:3000/auth/reset
+    "PASSWORD_RESET_CONFIRM_URL": "/password-reset/{uid}/{token}",  # Set the frontend url. Example: http:localhost:3000/auth/reset
     "SET_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
     "TOKEN_MODEL": None,  # To Delete User Must Set it to None
