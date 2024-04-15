@@ -10,11 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import read_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load All the .env
+read_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "corsheaders",
+    "djoser",
 ]
 
 MIDDLEWARE = [
@@ -153,13 +159,47 @@ REST_FRAMEWORK = {
     },
 }
 
+# Email Configuration
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
+EMAIL_USE_TLS = True
+
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "ALGORITHM": "HS256",
+    "UPDATE_LAST_LOGIN": True,
+}
+
+# Djoser Settings
+DJOSER = {
+    "LOGIN_FIELD": "email",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "ACTIVATION_URL": "/activate/{uid}/{token}",  # Set the frontend url. Example: http:localhost:3000/auth/verify
+    "SEND_ACTIVATION_EMAIL": True,
+    "SEND_CONFIRMATION_EMAIL": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",  # Set the frontend url. Example: http:localhost:3000/auth/reset
+    "SET_PASSWORD_RETYPE": True,
+    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "TOKEN_MODEL": None,  # To Delete User Must Set it to None
+    "SERIALIZERS": {
+        "user_create": "myapp.serializers.CustomUserSerializer",
+        "user": "myapp.serializers.CustomUserSerializer",
+        "user_delete": "djoser.serializers.UserDeleteSerializer",
+    },
+    # "EMAIL": {
+    #     "activation": "account.email.ActivationEmail",
+    #     "confirmation": "account.email.ConfirmationEmail",
+    #     "password_reset": "account.email.PasswordResetEmail",
+    #     "password_changed_confirmation": "account.email.PasswordChangedConfirmationEmail",
+    # },
 }
 
 CORS_ALLOWED_ORIGINS = [
