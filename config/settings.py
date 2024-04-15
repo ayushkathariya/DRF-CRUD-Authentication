@@ -13,13 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
-from dotenv import read_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load All the .env
-read_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -177,15 +174,19 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": True,
 }
 
+# Email Settings for Frontend URL
+DOMAIN = os.environ.get("DOMAIN")
+SITE_NAME = os.environ.get("SITE_NAME")
+
 # Djoser Settings
 DJOSER = {
     "LOGIN_FIELD": "email",
     "USER_CREATE_PASSWORD_RETYPE": True,
-    "ACTIVATION_URL": "/activate/{uid}/{token}",  # Set the frontend url. Example: http:localhost:3000/auth/verify
+    "ACTIVATION_URL": "activate/{uid}/{token}",  # Example: http:localhost:3000/activate/:uid/:token
     "SEND_ACTIVATION_EMAIL": True,
     "SEND_CONFIRMATION_EMAIL": True,
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
-    "PASSWORD_RESET_CONFIRM_URL": "/password-reset/{uid}/{token}",  # Set the frontend url. Example: http:localhost:3000/auth/reset
+    "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",  # Example:http:localhost:3000/password-reset/:uid/:token
     "SET_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
     "TOKEN_MODEL": None,  # To Delete User Must Set it to None
@@ -194,12 +195,6 @@ DJOSER = {
         "user": "myapp.serializers.CustomUserSerializer",
         "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
-    # "EMAIL": {
-    #     "activation": "account.email.ActivationEmail",
-    #     "confirmation": "account.email.ConfirmationEmail",
-    #     "password_reset": "account.email.PasswordResetEmail",
-    #     "password_changed_confirmation": "account.email.PasswordChangedConfirmationEmail",
-    # },
 }
 
 CORS_ALLOWED_ORIGINS = [
